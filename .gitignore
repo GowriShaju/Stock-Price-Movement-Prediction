@@ -1,0 +1,14 @@
+# Virtual environment
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Data files
+1_data/*.csv
+1_data/*.pkl
+1_data/*.npy
+
+# VS Code
+.vscode/
