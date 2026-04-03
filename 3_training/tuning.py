@@ -11,7 +11,7 @@ from lstm import LSTM_model
 from sklearn.metrics import accuracy_score
 
 
-# ── Dataset ─────────────────────────
+# Dataset 
 class StockDataset(Dataset):
     def __init__(self, X, y_direction, y_magnitude):
         self.X = torch.tensor(X, dtype=torch.float32)
@@ -25,7 +25,7 @@ class StockDataset(Dataset):
         return len(self.X)
 
 
-# ── Load Data ───────────────────────
+# Load Data 
 def load_data():
     X_train = np.load("1_data/X_train.npy")
     y_dir_train = np.load("1_data/y_dir_train.npy")
@@ -38,7 +38,7 @@ def load_data():
     return X_train, y_dir_train, y_mag_train, X_val, y_dir_val, y_mag_val
 
 
-# ── Train One Config ─────────────────
+# Train One Config 
 def train_one(config, device):
 
     X_train, y_dir_train, y_mag_train, X_val, y_dir_val, y_mag_val = load_data()
@@ -66,7 +66,7 @@ def train_one(config, device):
     bce_loss = nn.BCEWithLogitsLoss()
     mse_loss = nn.MSELoss()
 
-    # ── Training ──
+    # Training 
     for epoch in range(config["epochs"]):
         model.train()
 
@@ -110,7 +110,7 @@ def train_one(config, device):
     return acc, model
 
 
-# ── Hyperparameter Search ────────────
+# Hyperparameter Search 
 def tune():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
