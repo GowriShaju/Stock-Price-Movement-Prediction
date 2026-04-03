@@ -66,7 +66,7 @@ These help the model capture:
 
 ---
 
-## Target Engineering (IMPORTANT ⭐)
+## Target Engineering 
 
 Instead of using simple day-to-day price change, the **target direction is defined using a rolling mean (moving average)**.
 
