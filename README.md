@@ -220,14 +220,30 @@ Tuned:
 ## Project Structure
 
     ├── data/
-    ├── notebooks/
-    ├── src/
-    │   ├── preprocessing.py
-    │   ├── feature_engineering.py
-    │   ├── model.py
-    │   ├── train.py
-    │   └── evaluate.py
+    |   ├── data_downloading.py
+    |   ├── preprocessing.py
+    |   ├── feature_engineering.py
+    |   ├── target_columns.py
+    |   ├── scaling.py
+    |   ├── windowing.py
+    ├── models/
+    |   ├── lstm.py 
+    ├── training/
+    │   ├── trainer.py
+    │   ├── tuning.py
+    ├── evaluation/
+    │   ├── metrics.py
+    │   └── visualize.py
+    |   ├── validation.py
+    |   ├── test.py
     ├── results/
+    |   ├── plots/
+    |   ├── metrics_summar.txt
+    ├── notebooks/
+    |   ├── stock_price_movement_prediction.ipynb
+    ├── artifacts/
+    |   ├── models/
+    |   ├── scalers/
     ├── README.md
 
 ---
