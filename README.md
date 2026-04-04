@@ -235,6 +235,7 @@ Tuned:
 ├── evaluation/  
 ├── results/  
 ├── notebooks/   
+├── artifacts/
 ├── README.md  
 
 ---
