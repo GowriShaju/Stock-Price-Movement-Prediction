@@ -29,7 +29,7 @@ This project simulates real-world financial modeling challenges.
 ## Dataset Description
 - **Source:** Yahoo Finance
 - **Type:** Time-series data (daily)
-- **Stock Used:** Reliance (or selected stock)
+- **Stock Used:** Selected stock (e.g., Reliance / AAPL)
 
 ### Features:
 - Open  
@@ -68,96 +68,55 @@ These help the model capture:
 
 ## Target Engineering  
 
-Instead of using simple day-to-day price changes, the targets are defined using **future returns over a fixed horizon**, making the problem a true forecasting task.
-
----
+Targets are defined using **future returns over a fixed horizon**, making this a true forecasting problem.
 
 ### Target Magnitude (Regression Task)  
 
-Defined as the **future return over a horizon \( h \)**:
+target_magnitude = Close(t+h) / Close(t) - 1
 
-\[
-\text{target\_magnitude} = \frac{P_{t+h}}{P_t} - 1
-\]
-
-**Represents:**
-- The **percentage change in price** from current time \( t \) to future time \( t+h \)  
-- The **strength and scale of price movement**  
+Represents:
+- Future percentage price change  
+- Strength of movement  
 
 ---
 
 ### Target Direction (Classification Task)  
 
-Derived from the **sign of the future return**:
+target_direction = 1 if future_return > 0 else 0
 
-\[
-\text{target\_direction} =
-\begin{cases}
-1 & \text{if } \text{future return} > 0 \\
-0 & \text{otherwise}
-\end{cases}
-\]
-
-**Represents:**
-- Whether the price will **increase (Up)** or **decrease (Down)** over the prediction horizon  
-- A **binary interpretation** of the same movement captured in magnitude  
+Represents:
+- Upward or downward movement over the prediction horizon  
 
 ---
 
 ### Why this approach?
-
-- Ensures **true future prediction** (no leakage from current values)  
-- Maintains **consistency between regression and classification targets**  
-- Avoids misleading formulations based on current-state indicators  
-- Aligns with real-world financial modeling:
-  - **Direction → trading decision (buy/sell)**
-  - **Magnitude → expected return (risk/reward)**  
-
----
-
-### Key Advantage  
-
-Both targets are derived from the **same underlying quantity (future return)**, ensuring:
-
-- Coherent learning  
-- Better interpretability  
-- Improved model stability  
-
----
-
-### Summary  
-
-| Target | Type | Meaning |
-|--------|------|--------|
-| `target_magnitude` | Regression | Future percentage return |
-| `target_direction` | Classification | Sign of future return (Up/Down) |
+- Ensures **true future prediction (no leakage)**  
+- Keeps classification and regression **consistent**  
+- Reflects real-world trading objectives  
 
 ---
 
 ## Problem Formulation
 
-### 1. Classification Task
-Predict:
-- Whether the stock is moving **above or below trend**
+### Classification Task
+Predict whether the price will go **Up or Down in the future**
 
-### 2. Regression Task
-Predict:
-- Magnitude of price change (difference between consecutive prices)
+### Regression Task
+Predict the **magnitude of future return**
 
 ---
 
 ## Sequence Generation
 Used **Sliding Window Technique**
 
-Example:
-    (X[t-n], ..., X[t-1]) → X[t]
+(X[t-n], ..., X[t-1]) → X[t]
 
 ---
 
 ## Model Architecture
 
 - LSTM Layers  
-- Dropout (for regularization)  
+- Dropout (regularization)  
 - Fully Connected Layers  
 
 ### Outputs:
@@ -170,12 +129,12 @@ Example:
 
 - **Optimizer:** Adam  
 
-- **Loss Functions:**
-  - Binary Cross Entropy (Classification)  
-  - Mean Squared Error (Regression)  
+### Loss Functions:
+- Binary Cross Entropy (Classification)  
+- Mean Squared Error (Regression)  
 
 Combined Loss:
-    L = λ1 * L_classification + λ2 * L_regression
+L = λ1 * L_classification + λ2 * L_regression
 
 ---
 
@@ -188,22 +147,21 @@ Combined Loss:
 ## Data Splitting Strategy
 
 Used **chronological split (NOT random)**:
-- Training set  
-- Validation set  
-- Test set  
+- Training  
+- Validation  
+- Test  
 
-Prevents **future data leakage**.
+Ensures **no future data leakage**.
 
 ---
 
 ## Hyperparameter Tuning
 
 Tuned:
-- Number of LSTM layers  
 - Hidden units  
 - Learning rate  
 - Batch size  
-- Dropout rate  
+- Dropout  
 
 ---
 
@@ -227,90 +185,67 @@ Tuned:
 ## Results
 
 ### Classification:
-- Accuracy: 0.8044  
-- Precision: 0.8410  
-- Recall: 0.8213  
-- F1 Score: 0.8311  
-- ROC-AUC: 0.8641  
+- **Accuracy:** ~0.60  
+- **Precision:** ~0.62  
+- **Recall:** ~0.74  
+- **F1 Score:** ~0.68  
+- **ROC-AUC:** ~0.59  
 
 ### Regression:
-- MAE: 0.0804  
-- MSE: 0.0094  
-- RMSE: 0.0969  
+- **MAE:** ~0.06  
+- **RMSE:** ~0.07  
 
 ---
 
 ## Key Observations
 
-- Strong performance in **trend prediction**  
-- Slight bias toward upward movement  
-- Regression struggles in high volatility  
-- Model smooths extreme fluctuations  
+- The model achieves **~60% accuracy**, outperforming the naive baseline, indicating **meaningful predictive signal**.
+- The model successfully captures **general directional trends** in stock movement.
+- Balanced threshold tuning helped reduce **bias toward upward predictions**.
+- Regression performance remains limited due to **high market volatility**.
+- The model tends to **smooth extreme movements**, making sharp spikes harder to predict.
+- Overall, the model reflects a **realistic and leakage-free financial forecasting setup**.
 
 ---
 
 ## Limitations
 
-- Sensitive to volatility  
-- Limited feature set  
-- Class imbalance bias  
-- High computational cost  
-- Difficulty capturing sudden spikes  
+- Financial data is highly **noisy and unpredictable**  
+- Limited ability to capture **sudden market shocks**  
+- Weak regression performance (common in finance)  
+- External factors (news, sentiment) not included  
 
 ---
 
 ## Future Improvements
 
-- Sentiment analysis integration  
-- Transformer / Attention models  
-- Ensemble methods  
-- Real-time prediction system  
-- Advanced hyperparameter tuning  
+- Incorporate sentiment analysis  
+- Use Transformer-based models  
+- Ensemble learning methods  
+- Improve feature engineering  
+- Add real-time prediction system  
 
 ---
 
 ## Project Structure
 
-    ├── data/
-    |   ├── data_downloading.py
-    |   ├── preprocessing.py
-    |   ├── feature_engineering.py
-    |   ├── target_columns.py
-    |   ├── scaling.py
-    |   ├── windowing.py
-    ├── models/
-    |   ├── lstm.py 
-    ├── training/
-    │   ├── trainer.py
-    │   ├── tuning.py
-    ├── evaluation/
-    │   ├── metrics.py
-    │   └── visualize.py
-    |   ├── validation.py
-    |   ├── test.py
-    ├── results/
-    |   ├── plots/
-    |   ├── metrics_summar.txt
-    ├── notebooks/
-    |   ├── stock_price_movement_prediction.ipynb
-    ├── artifacts/
-    |   ├── models/
-    |   ├── scalers/
-    ├── README.md
+├── data/  
+├── models/  
+├── training/  
+├── evaluation/  
+├── results/  
+├── notebooks/  
+├── artifacts/  
+├── README.md  
 
 ---
 
 ## Setup Instructions
 
-Clone repository:
-    git clone <your-repo-link>
-    cd <repo-name>
-
-Install dependencies:
-    pip install -r requirements.txt
-
-Run training:
-    python train.py
+git clone <repo-link>  
+cd <repo-name>  
+pip install -r requirements.txt  
+python train.py  
 
 ---
 
@@ -321,65 +256,22 @@ Run training:
 - NumPy  
 - Pandas  
 - Scikit-learn  
-- Matplotlib  
+- Matplotlib
+- seaborn
 
 ---
-
-## Reproducibility
-
-- Fixed random seeds  
-- Deterministic setup  
-
----
-
-## Deliverables Included
-
-- Clean dataset  
-- LSTM implementation  
-- Training pipeline  
-- Evaluation metrics  
-- Visualizations  
-- Detailed report  
-
----
-
 
 ## Final Note  
 
-This project highlights the inherent challenges of **financial time-series prediction**, where achieving high performance is difficult due to the nature of the data.
+This project highlights the inherent difficulty of **financial time-series prediction**.  
 
-### Key Limitations:
+Due to market noise, non-stationarity, and external influences, achieving very high accuracy is unrealistic.  
 
-- **Market Noise:**  
-  Stock prices contain significant random fluctuations, making it hard for models to distinguish signal from noise.
-
-- **Low Predictability:**  
-  Financial markets are often considered **weakly efficient**, meaning past data provides limited information about future movements.
-
-- **Class Imbalance & Bias:**  
-  Slight dominance of upward movements can bias the model, affecting metrics like accuracy and recall.
-
-- **Non-Stationarity:**  
-  Market behavior changes over time, so patterns learned from historical data may not generalize well.
-
-- **Complex External Factors:**  
-  Price movements are influenced by news, macroeconomic events, and investor sentiment, which are not captured in the dataset.
-
----
-
-### Practical Insight:
-
-Due to these factors, even **modest performance (e.g., ~55–60% accuracy or ROC-AUC)** can indicate the presence of meaningful predictive signals.
-
----
-
-This reinforces that the goal of the project is not to achieve extremely high accuracy, but to develop a **realistic, leakage-free, and well-formulated predictive framework** for stock price movement.
+However, the model demonstrates that even **moderate performance (~60% accuracy, ~0.59 ROC-AUC)** can indicate **useful predictive capability** when the problem is formulated correctly and evaluated without bias.
 
 ---
 
 ## Author
 
 **Gowri Shaju**  
-AI/ML Engineer(L1) Candidate  
-
----
+AI/ML Engineer (L1) Candidate  
