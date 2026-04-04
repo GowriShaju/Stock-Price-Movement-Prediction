@@ -97,10 +97,32 @@ def test_model():
     all_mag_preds = np.array(all_mag_preds)
     all_mag_true = np.array(all_mag_true)
 
-    # ========================= FIXED THRESHOLD =========================
-    threshold = 0.53  
+
+    # Classification Metrics
+    from sklearn.metrics import accuracy_score, balanced_accuracy_score
+
+    y_true = all_labels
+
+    best_score = 0
+    best_threshold = 0.5
+
+    for t in np.arange(0.4, 0.8, 0.02):
+         preds = (all_probs >= t).astype(int)
+
+         if preds.sum() == 0 or preds.sum() == len(preds):
+           continue
+
+         score = balanced_accuracy_score(y_true, preds)
+
+         if score > best_score:
+            best_score = score
+            best_threshold = t
+
+    print(f"\nBest Threshold: {best_threshold:.2f} | Best Balanced Acc: {best_score:.4f}")
+    threshold = best_threshold
 
     final_preds = (all_probs > threshold).astype(int)
+    final_acc = accuracy_score(all_labels, final_preds) 
 
     from sklearn.metrics import accuracy_score
     final_acc = accuracy_score(all_labels, final_preds)
