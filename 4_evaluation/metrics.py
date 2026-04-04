@@ -75,14 +75,12 @@ def evaluate_metrics(all_probs, all_labels,
 
     mae = mean_absolute_error(all_mag_true, all_mag_preds)
     mse = mean_squared_error(all_mag_true, all_mag_preds)
-    rmse = np.sqrt(mse)
-    r2 = r2_score(all_mag_true, all_mag_preds)
+    rmse = np.sqrt(mse) 
 
     print("\n--- Regression Metrics ---")
     print(f"MAE  : {mae:.4f}")
     print(f"MSE  : {mse:.4f}")
-    print(f"RMSE : {rmse:.4f}")
-    print(f"R2   : {r2:.4f}")
+    print(f"RMSE : {rmse:.4f}") 
 
     # ================= SAVE (WRITE) =================
     with open("5_results/metrics_summary.txt", "w") as f:
@@ -111,7 +109,6 @@ def evaluate_metrics(all_probs, all_labels,
         f.write(f"MAE  : {mae:.4f}\n")
         f.write(f"MSE  : {mse:.4f}\n")
         f.write(f"RMSE : {rmse:.4f}\n")
-        f.write(f"R2   : {r2:.4f}\n")
 
     print("\n======================================")
 
