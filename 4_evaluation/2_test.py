@@ -51,12 +51,12 @@ def test_model():
     X_test, y_dir_test, y_mag_test = load_test_data()
 
     dataset = StockDataset(X_test, y_dir_test, y_mag_test)
-    loader = DataLoader(dataset, batch_size=32, shuffle=False)
+    loader = DataLoader(dataset, batch_size = 32, shuffle = False)
 
     input_size = X_test.shape[2]
 
     # Load trained model
-    checkpoint = torch.load("2_models/best_model_tuned.pth", map_location=device)
+    checkpoint = torch.load("artfacts/models/best_model_tuned.pth", map_location = device)
 
     best_config = checkpoint['config']
 
