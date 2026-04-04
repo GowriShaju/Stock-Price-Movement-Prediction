@@ -56,7 +56,7 @@ def test_model():
     input_size = X_test.shape[2]
 
     # Load trained model
-    checkpoint = torch.load("artfacts/models/best_model_tuned.pth", map_location = device)
+    checkpoint = torch.load("artifacts/models/best_model_tuned.pth", map_location = device)
 
     best_config = checkpoint['config']
 
