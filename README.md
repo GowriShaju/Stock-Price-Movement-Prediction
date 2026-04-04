@@ -134,9 +134,6 @@ Both targets are derived from the **same underlying quantity (future return)**, 
 
 ---
 
-This formulation transforms the problem from **trend detection** to a proper **time-series forecasting task**, making the model outputs more realistic and actionable.
----
-
 ## Problem Formulation
 
 ### 1. Classification Task
