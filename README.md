@@ -343,13 +343,43 @@ Run training:
 
 ---
 
+
+## Final Note  
+
+This project highlights the inherent challenges of **financial time-series prediction**, where achieving high performance is difficult due to the nature of the data.
+
+### Key Limitations:
+
+- **Market Noise:**  
+  Stock prices contain significant random fluctuations, making it hard for models to distinguish signal from noise.
+
+- **Low Predictability:**  
+  Financial markets are often considered **weakly efficient**, meaning past data provides limited information about future movements.
+
+- **Class Imbalance & Bias:**  
+  Slight dominance of upward movements can bias the model, affecting metrics like accuracy and recall.
+
+- **Non-Stationarity:**  
+  Market behavior changes over time, so patterns learned from historical data may not generalize well.
+
+- **Complex External Factors:**  
+  Price movements are influenced by news, macroeconomic events, and investor sentiment, which are not captured in the dataset.
+
+---
+
+### Practical Insight:
+
+Due to these factors, even **modest performance (e.g., ~55–60% accuracy or ROC-AUC)** can indicate the presence of meaningful predictive signals.
+
+---
+
+This reinforces that the goal of the project is not to achieve extremely high accuracy, but to develop a **realistic, leakage-free, and well-formulated predictive framework** for stock price movement.
+
+---
+
 ## Author
 
 **Gowri Shaju**  
 AI/ML Engineer(L1) Candidate  
 
 ---
-
-## 🔹 Final Note
-
-This project highlights the importance of **target engineering using rolling mean**, which improves stability and aligns predictions with real trading strategies instead of noisy day-to-day movements.
