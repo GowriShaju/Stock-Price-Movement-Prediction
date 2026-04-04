@@ -66,20 +66,75 @@ These help the model capture:
 
 ---
 
-## Target Engineering 
+## Target Engineering  
 
-Instead of using simple day-to-day price change, the **target direction is defined using a rolling mean (moving average)**.
+Instead of using simple day-to-day price changes, the targets are defined using **future returns over a fixed horizon**, making the problem a true forecasting task.
 
-### Definition:
-- If **Close Price > 20-day Moving Average → Up (1)**  
-- Else → Down (0)  
+---
+
+### Target Magnitude (Regression Task)  
+
+Defined as the **future return over a horizon \( h \)**:
+
+\[
+\text{target\_magnitude} = \frac{P_{t+h}}{P_t} - 1
+\]
+
+**Represents:**
+- The **percentage change in price** from current time \( t \) to future time \( t+h \)  
+- The **strength and scale of price movement**  
+
+---
+
+### Target Direction (Classification Task)  
+
+Derived from the **sign of the future return**:
+
+\[
+\text{target\_direction} =
+\begin{cases}
+1 & \text{if } \text{future return} > 0 \\
+0 & \text{otherwise}
+\end{cases}
+\]
+
+**Represents:**
+- Whether the price will **increase (Up)** or **decrease (Down)** over the prediction horizon  
+- A **binary interpretation** of the same movement captured in magnitude  
+
+---
 
 ### Why this approach?
-- Reduces short-term noise  
-- Captures **trend-based movement**  
-- More aligned with real trading strategies  
-- Provides **stable and meaningful labels**  
 
+- Ensures **true future prediction** (no leakage from current values)  
+- Maintains **consistency between regression and classification targets**  
+- Avoids misleading formulations based on current-state indicators  
+- Aligns with real-world financial modeling:
+  - **Direction → trading decision (buy/sell)**
+  - **Magnitude → expected return (risk/reward)**  
+
+---
+
+### Key Advantage  
+
+Both targets are derived from the **same underlying quantity (future return)**, ensuring:
+
+- Coherent learning  
+- Better interpretability  
+- Improved model stability  
+
+---
+
+### Summary  
+
+| Target | Type | Meaning |
+|--------|------|--------|
+| `target_magnitude` | Regression | Future percentage return |
+| `target_direction` | Classification | Sign of future return (Up/Down) |
+
+---
+
+This formulation transforms the problem from **trend detection** to a proper **time-series forecasting task**, making the model outputs more realistic and actionable.
 ---
 
 ## Problem Formulation
