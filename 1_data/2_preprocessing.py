@@ -9,8 +9,7 @@ def checking_columns(df):
         print(f"Mssing required column, {missing}")
     else:
         print("All required columns exist")
-
-    df.drop("Adj Close", axis=1, inplace=True)
+        
     print()
     print("--------------------------------------------------------------------------------------------------------")
     print()
