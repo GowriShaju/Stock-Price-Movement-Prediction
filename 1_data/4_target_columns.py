@@ -25,7 +25,7 @@ def cleanup(df):
 
 # SAVE
 def save_data(df):
-    df.to_csv("aapl_final.csv")
+    df.to_csv("1_data/aapl_final.csv")
     print("Final dataset saved")
     return df
 
@@ -43,7 +43,7 @@ def create_targets(df):
 
 if __name__ == "__main__":
     data = pd.read_csv(
-        "aapl_with_indicators.csv",
+        "1_data/aapl_with_indicators.csv",
         index_col = "Date",
         parse_dates = True
     )
