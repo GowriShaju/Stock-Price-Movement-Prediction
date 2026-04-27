@@ -48,7 +48,7 @@ This project simulates real-world financial modeling challenges.
 ## Data Preprocessing
 - Handled missing values (forward fill / removal)  
 - Maintained chronological order (to avoid data leakage)  
-- Applied **MinMax Scaling** for normalization  
+- Applied **Standard Scaling** for normalization  
 
 ---
 
